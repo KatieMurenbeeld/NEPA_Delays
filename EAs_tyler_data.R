@@ -63,6 +63,9 @@ proj_doc_count <- proj_docs_ea %>%
 mean(proj_doc_count$n)
 median(proj_doc_count$n)
 
+# Mean documents per project: 17.98
+# Median documents per project: 12
+
 ggplot(proj_doc_count, aes(x=n)) + 
   geom_histogram(binwidth = 10) + 
   ggtitle("Histogram of Number of Documents Per Project") + 
@@ -89,7 +92,7 @@ agg_df_mean %>%
   ggplot(aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
   ggtitle("Average Number of Documents per Project by NEPA Stage") + 
-  xlab("NEPA Stage") + ylab("Ave. Number of Documents by Stage") # Make sure that is actually what you are averaging.
+  xlab("NEPA Stage") + ylab("Ave. Number of Documents by Stage per Project") # Make sure that is actually what you are averaging.
 
 agg_df_median %>% 
   ggplot(aes(x=Group.1, y=x)) +
@@ -121,32 +124,32 @@ aggregate(proj_doc_count_app$n, list(proj_doc_count_app$`APPEALED OR OBJECTED?`)
 
 ggplot(data = aggregate(proj_doc_count_region$n, list(proj_doc_count_region$REGION_ID), FUN=mean), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
+  ggtitle("Average Number of Documents per Project by Region") + 
   xlab("FS Region") + ylab("Ave. Number of Documents by Region")
 
 ggplot(data = aggregate(proj_doc_count_region$n, list(proj_doc_count_region$REGION_ID), FUN=median), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
+  ggtitle("Median Number of Documents per Project by Region") + 
   xlab("FS Region") + ylab("Medain Number of Documents by Region")
 
 ggplot(data = aggregate(proj_doc_count_lit$n, list(proj_doc_count_lit$`LITIGATED?`), FUN=mean), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
+  ggtitle("Average Number of Documents per Project by Litigated?") + 
   xlab("Litigated? (1 = yes, 0 = no") + ylab("Ave. Number of Documents by Litigated?")
 
 ggplot(data = aggregate(proj_doc_count_lit$n, list(proj_doc_count_lit$`LITIGATED?`), FUN=median), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
+  ggtitle("Median Number of Documents per Project by Litigated?") + 
   xlab("Litigated? (1 = yes, 0 = no") + ylab("Medain Number of Documents by Litigated?")
 
 ggplot(data = aggregate(proj_doc_count_app$n, list(proj_doc_count_app$`APPEALED OR OBJECTED?`), FUN=mean), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
-  xlab("Appealed? (1 = yes, 0 = no") + ylab("Ave. Number of Documents by Litigated?")
+  ggtitle("Average Number of Documents per Project by Appealed?") + 
+  xlab("Appealed? (1 = yes, 0 = no") + ylab("Ave. Number of Documents by Appealed?")
 
 ggplot(data = aggregate(proj_doc_count_app$n, list(proj_doc_count_app$`APPEALED OR OBJECTED?`), FUN=median), aes(x=Group.1, y=x)) +
   geom_bar(stat="identity") + 
-  ggtitle("Average Number of Documents per Project by NEPA Stage") + 
+  ggtitle("Median Number of Documents per Project by Appealed?") + 
   xlab("Appealed? (1 = yes, 0 = no") + ylab("Medain Number of Documents by Appealed?")
 
 # Number of documents through time? Look at both Initiation FY and Signed FY

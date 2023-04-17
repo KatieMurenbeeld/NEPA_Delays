@@ -42,23 +42,32 @@ options(max.print = 10000)
 ```{r data, echo=TRUE, eval=TRUE}
 ## Load the data for survival analysis
 
-df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_NEPA_2009_2018_survial_analysis_c20221021.csv")
+#df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_NEPA_2009_2018_survial_analysis_c20221021.csv")
+
+## FACTS+PALS: NEPA init 2009-2018, 3 purposes
+#df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_to_r_surv_an_c20221130.csv")
+## FACTS+PALS: NEPA init 2009-2021, all purposes
+#df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_to_r_surv_an_c20221202.csv")
+## FACTS+PALS: NEPA init 2009-2018, all purposes
+#df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_to_r_surv_an_2009_2018_allpurp_c20221202.csv")
+## FACTS+PALS: NEPA init 2009-2021, 3 purposes
+#df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_to_r_surv_an_2009_2021_subpurp_c20221202.csv")
+## FACTS+PALS: NEPA init 2009-2021, 3 purposes with updated calculated project footprint
+df_fin <- read.csv("/Users/kathrynmurenbeeld/Desktop/NEPA_DELAYS/Data/df_to_r_surv_an_2009_2021_allpurp_c20230120.csv")
+
 ```
 
 ```{r data_variables, echo=TRUE, eval=TRUE}
-# Need to convert DECISION TYPE, LITIGATED? and APPEALED? to factors
+# Need to convert DECISION TYPE to factor
 # Need to convert event variables (NEPA_COMP2, PROJ_COMP, PROJ_INIT, and PROJ_AWARDED) from true, false to 1, 0
 # I think all of the duration variables (e.g ASSESSMENT_TIME) should be good, need to be numeric
 
 df_fin$DECISION.TYPE <- as.factor(df_fin$DECISION.TYPE)
-df_fin$LITIGATED. <- as.factor(df_fin$LITIGATED.)
-df_fin$APPEALED.OR.OBJECTED. <- as.factor(df_fin$APPEALED.OR.OBJECTED.)
 
 df_fin$NEPA_COMP2 <- as.integer(as.logical(df_fin$NEPA_COMP2))
 df_fin$PROJ_COMP <- as.integer(as.logical(df_fin$PROJ_COMP))
 df_fin$PROJ_INIT <- as.integer(as.logical(df_fin$PROJ_INIT))
 df_fin$PROJ_AWARDED <- as.integer(as.logical(df_fin$PROJ_AWARDED))
-
 ```
 
 
@@ -327,11 +336,18 @@ print(km_curv_award_nepa)
 #ggsave( "/Users/kathrynmurenbeeld/Desktop/Survival_Analysis/WRITING/FIGS/km_curv_award_nepa.pdf", print(km_curv_award_nepa),  device="pdf", dpi=300 )
 ```
 
-```{r}
-#summary(fit_award_nepa)
+```{r log_rank_assess, echo=TRUE, eval=TRUE, warning=FALSE}
+surv_diff_assess <- survdiff(Surv(ASSESSMENT_TIME_MNTH, NEPA_COMP2) ~ DECISION.TYPE, data = df_fin)
+surv_diff_assess
 ```
-
-
+```{r log_rank_init, echo=TRUE, eval=TRUE, warning=FALSE}
+surv_diff_init <- survdiff(Surv(NEPA_TO_FIRST_ACT_MAX_MNTH, PROJ_INIT) ~ DECISION.TYPE, data = df_fin)
+surv_diff_init
+```
+```{r log_rank_award, echo=TRUE, eval=TRUE, warning=FALSE}
+surv_diff_award <- survdiff(Surv(NEPA_TO_CONTRACT_MAX_MNTH, PROJ_AWARDED) ~ DECISION.TYPE, data = df_fin)
+surv_diff_award
+```
 
 
 
